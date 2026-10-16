@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/collectible.gd" id="1_collectible"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pickup"]
+radius = 0.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_gem"]
+radius = 0.42
+height = 0.84
+radial_segments = 4
+rings = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(1, 0.780392, 0.196078, 1)
+metallic = 0.85
+roughness = 0.15
+emission_enabled = true
+emission = Color(1, 0.654902, 0.101961, 1)
+emission_energy_multiplier = 2.0
+
+[node name="Collectible" type="Area3D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_collectible")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_pickup")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_gem")
+surface_material_override/0 = SubResource("StandardMaterial3D_gold")

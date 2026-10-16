@@ -1,0 +1,14 @@
+---
+description: Godot 引擎路径与本仓库约定
+alwaysApply: true
+---
+
+# Godot 环境
+
+- 代码仓库（当前工作区）：`F:\demo1\dev`
+- Godot 引擎目录：`F:\steam\steamapps\common\Godot Engine`
+- 可执行文件：`F:\steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe`
+- 版本：Godot 4.7.2.stable（Steam），项目 `config/features` 为 `4.7` + Forward Plus
+- 主场景：`res://scenes/main.tscn`
+
+操作本项目时使用上述引擎可执行文件（headless / 运行场景 / 导出），不要另找系统里的其他 Godot 安装。
