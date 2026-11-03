@@ -95,6 +95,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Dialogue.is_active():
+		return
 	if event.is_action_pressed("toggle_step_up"):
 		step_up_enabled = not step_up_enabled
 	elif event is InputEventMouseMotion:
@@ -112,6 +114,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# 对话进行中：清空操作意图，但保留重力与贴地
+	if Dialogue.is_active():
+		velocity.x = 0.0
+		velocity.z = 0.0
+		if not is_on_floor():
+			velocity.y -= (_rise_gravity if velocity.y > 0.0 else _fall_gravity) * delta
+		move_and_slide()
+		return
+
 	_update_timers(delta)
 
 	var speed := sprint_speed if Input.is_action_pressed("sprint") else walk_speed

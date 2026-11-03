@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bxqu2k1v7g2oi"]
+
+[ext_resource type="Script" uid="uid://jep6nwf858l5" path="res://scripts/dialogue/trigger_zone.gd" id="1_script"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_hint"]
+radius = 2.0
+height = 4.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hint"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.35, 0.75, 1, 0.1)
+
+[node name="TriggerZone" type="Node3D" unique_id=399746658]
+script = ExtResource("1_script")
+
+[node name="RangeHint" type="MeshInstance3D" parent="." unique_id=202927073]
+visible = false
+mesh = SubResource("SphereMesh_hint")
+surface_material_override/0 = SubResource("StandardMaterial3D_hint")

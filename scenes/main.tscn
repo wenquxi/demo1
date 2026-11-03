@@ -1,14 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://cf5oehkqdxysv"]
+[gd_scene format=3 uid="uid://cf5oehkqdxysv"]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/collectible.tscn" id="2_collectible"]
 [ext_resource type="Script" uid="uid://cxwxcxxhu1c81" path="res://scripts/level.gd" id="3_level"]
 [ext_resource type="Script" uid="uid://gnxqsjq4xswl" path="res://scripts/hud.gd" id="4_hud"]
+[ext_resource type="Material" path="res://materials/stone_stairs.tres" id="5_stone"]
+[ext_resource type="PackedScene" uid="uid://bxqu2k1v7g2oi" path="res://scenes/dialogue/trigger_zone.tscn" id="6_trigger"]
+[ext_resource type="PackedScene" path="res://scenes/npc.tscn" id="7_npc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.298039, 0.501961, 0.827451, 1)
 sky_horizon_color = Color(0.72549, 0.8, 0.878431, 1)
-sky_curve = 0.15
 ground_bottom_color = Color(0.160784, 0.176471, 0.203922, 1)
 ground_horizon_color = Color(0.6, 0.643137, 0.705882, 1)
 
@@ -25,19 +27,15 @@ tonemap_mode = 3
 ssao_enabled = true
 glow_enabled = true
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(60, 1, 60)
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
 size = Vector2(60, 60)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
 albedo_color = Color(0.313726, 0.396078, 0.333333, 1)
 roughness = 0.9
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(60, 1, 60)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
-albedo_color = Color(0.494118, 0.505882, 0.529412, 1)
-roughness = 0.75
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
 albedo_color = Color(0.529412, 0.4, 0.290196, 1)
@@ -47,173 +45,185 @@ roughness = 0.8
 albedo_color = Color(0.376471, 0.482353, 0.560784, 1)
 roughness = 0.6
 
-[node name="Main" type="Node3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rock"]
+albedo_color = Color(0.494118, 0.505882, 0.529412, 1)
+roughness = 0.75
+
+[node name="Main" type="Node3D" unique_id=1275026613]
 script = ExtResource("3_level")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=902784305]
 environment = SubResource("Environment_1")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1939380520]
 transform = Transform3D(0.819152, 0, 0.573576, 0.439385, 0.642788, -0.627507, -0.368688, 0.766044, 0.526541, 0, 0, 0)
 light_energy = 1.1
 shadow_enabled = true
 directional_shadow_max_distance = 80.0
 
-[node name="Ground" type="StaticBody3D" parent="."]
-collision_layer = 1
-collision_mask = 1
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1169082852]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=1320573556]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Mesh" type="MeshInstance3D" parent="Ground"]
+[node name="Mesh" type="MeshInstance3D" parent="Ground" unique_id=1092147894]
 mesh = SubResource("PlaneMesh_ground")
 surface_material_override/0 = SubResource("StandardMaterial3D_ground")
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." unique_id=585794199 instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+slide_on_ceiling = false
 
-[node name="Stairs" type="Node3D" parent="."]
+[node name="Stairs" type="Node3D" parent="." unique_id=2005960194]
 
-[node name="Step1" type="CSGBox3D" parent="Stairs"]
+[node name="Step1" type="CSGBox3D" parent="Stairs" unique_id=2129573326]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.725, 0.125, -3)
 use_collision = true
 size = Vector3(0.45, 0.25, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Step2" type="CSGBox3D" parent="Stairs"]
+[node name="Step2" type="CSGBox3D" parent="Stairs" unique_id=940301024]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.175, 0.25, -3)
 use_collision = true
 size = Vector3(0.45, 0.5, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Step3" type="CSGBox3D" parent="Stairs"]
+[node name="Step3" type="CSGBox3D" parent="Stairs" unique_id=48378611]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.625, 0.375, -3)
 use_collision = true
 size = Vector3(0.45, 0.75, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Step4" type="CSGBox3D" parent="Stairs"]
+[node name="Step4" type="CSGBox3D" parent="Stairs" unique_id=353926267]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.075, 0.5, -3)
 use_collision = true
 size = Vector3(0.45, 1, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Step5" type="CSGBox3D" parent="Stairs"]
+[node name="Step5" type="CSGBox3D" parent="Stairs" unique_id=806498038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.525, 0.625, -3)
 use_collision = true
 size = Vector3(0.45, 1.25, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Step6" type="CSGBox3D" parent="Stairs"]
+[node name="Step6" type="CSGBox3D" parent="Stairs" unique_id=1508382758]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.975, 0.75, -3)
 use_collision = true
 size = Vector3(0.45, 1.5, 3)
-material = SubResource("StandardMaterial3D_rock")
+material = ExtResource("5_stone")
 
-[node name="Landing" type="CSGBox3D" parent="Stairs"]
+[node name="Landing" type="CSGBox3D" parent="Stairs" unique_id=216384048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7, 0.75, -3)
 use_collision = true
 size = Vector3(3, 1.5, 3)
-material = SubResource("StandardMaterial3D_platform")
+material = ExtResource("5_stone")
 
-[node name="Ramps" type="Node3D" parent="."]
+[node name="Ramps" type="Node3D" parent="." unique_id=1386491964]
 
-[node name="Ramp" type="CSGBox3D" parent="Ramps"]
+[node name="Ramp" type="CSGBox3D" parent="Ramps" unique_id=432008340]
 transform = Transform3D(0.866025, 0, -0.5, -0.137819, 0.961262, -0.238709, 0.480631, 0.275637, 0.832477, -3, 0.8, 4)
 use_collision = true
 size = Vector3(4, 0.4, 7)
 material = SubResource("StandardMaterial3D_ramp")
 
-[node name="Plateau" type="CSGBox3D" parent="Ramps"]
+[node name="Plateau" type="CSGBox3D" parent="Ramps" unique_id=948655962]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0.975, 9)
 use_collision = true
 size = Vector3(5, 1.95, 4.5)
 material = SubResource("StandardMaterial3D_platform")
 
-[node name="Terraces" type="Node3D" parent="."]
+[node name="Terraces" type="Node3D" parent="." unique_id=1825280411]
 
-[node name="Terrace1" type="CSGBox3D" parent="Terraces"]
+[node name="Terrace1" type="CSGBox3D" parent="Terraces" unique_id=1219661272]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.6, -1)
 use_collision = true
 size = Vector3(2.8, 1.2, 2.8)
 material = SubResource("StandardMaterial3D_platform")
 
-[node name="Terrace2" type="CSGBox3D" parent="Terraces"]
+[node name="Terrace2" type="CSGBox3D" parent="Terraces" unique_id=2074143139]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1.2, 2.2)
 use_collision = true
 size = Vector3(2.8, 2.4, 2.8)
 material = SubResource("StandardMaterial3D_platform")
 
-[node name="Terrace3" type="CSGBox3D" parent="Terraces"]
+[node name="Terrace3" type="CSGBox3D" parent="Terraces" unique_id=655308077]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 1.8, 5.4)
 use_collision = true
 size = Vector3(2.8, 3.6, 2.8)
 material = SubResource("StandardMaterial3D_platform")
 
-[node name="Props" type="Node3D" parent="."]
+[node name="Props" type="Node3D" parent="." unique_id=2140823091]
 
-[node name="Ledge" type="CSGBox3D" parent="Props"]
+[node name="Ledge" type="CSGBox3D" parent="Props" unique_id=1960557456]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, 6)
 use_collision = true
 size = Vector3(2, 1.2, 2)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="Pillar1" type="CSGBox3D" parent="Props"]
+[node name="Pillar1" type="CSGBox3D" parent="Props" unique_id=1149169527]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1.6, -8)
 use_collision = true
 size = Vector3(1.4, 3.2, 1.4)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="Pillar2" type="CSGBox3D" parent="Props"]
+[node name="Pillar2" type="CSGBox3D" parent="Props" unique_id=1719956589]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1.6, 2)
 use_collision = true
 size = Vector3(1.4, 3.2, 1.4)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="Pillar3" type="CSGBox3D" parent="Props"]
+[node name="Pillar3" type="CSGBox3D" parent="Props" unique_id=2044618765]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.6, 6)
 use_collision = true
 size = Vector3(1.4, 3.2, 1.4)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="WallN" type="CSGBox3D" parent="Props"]
+[node name="WallN" type="CSGBox3D" parent="Props" unique_id=1433818867]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -11)
 use_collision = true
 size = Vector3(16, 0.8, 0.6)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="WallE" type="CSGBox3D" parent="Props"]
+[node name="WallE" type="CSGBox3D" parent="Props" unique_id=1177462952]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.4, 0)
 use_collision = true
 size = Vector3(0.6, 0.8, 16)
 material = SubResource("StandardMaterial3D_rock")
 
-[node name="Collectibles" type="Node3D" parent="."]
+[node name="TriggerZone" parent="." unique_id=2032795970 instance=ExtResource("6_trigger")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+radius = 1.8
+dialogue_path = "res://dialogue/demo_01.txt"
+one_shot = true
 
-[node name="Coin1" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Npc" parent="." unique_id=27147456 instance=ExtResource("7_npc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+
+[node name="Collectibles" type="Node3D" parent="." unique_id=1595383473]
+
+[node name="Coin1" parent="Collectibles" unique_id=168172549 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5.5)
 
-[node name="Coin2" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Coin2" parent="Collectibles" unique_id=641911724 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7, 2.6, -3)
 
-[node name="Coin3" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Coin3" parent="Collectibles" unique_id=779861467 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 2.9, 9)
 
-[node name="Coin4" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Coin4" parent="Collectibles" unique_id=1700560750 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2.3, -1)
 
-[node name="Coin5" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Coin5" parent="Collectibles" unique_id=132484924 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 4.7, 5.4)
 
-[node name="Coin6" parent="Collectibles" instance=ExtResource("2_collectible")]
+[node name="Coin6" parent="Collectibles" unique_id=1544555019 instance=ExtResource("2_collectible")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.3, 6)
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1777859378]
 script = ExtResource("4_hud")
 
-[node name="Info" type="Label" parent="HUD"]
+[node name="Info" type="Label" parent="HUD" unique_id=189984031]
 offset_left = 22.0
 offset_top = 16.0
 offset_right = 660.0
@@ -224,7 +234,8 @@ theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 19
 text = "收集 0 / 0        用时 0:00.00        最佳 —"
 
-[node name="Hint" type="Label" parent="HUD"]
+[node name="Hint" type="Label" parent="HUD" unique_id=1876432242]
+anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 22.0
@@ -238,7 +249,8 @@ theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 15
 text = "上台阶能力：开      T 切换"
 
-[node name="Banner" type="Label" parent="HUD"]
+[node name="Banner" type="Label" parent="HUD" unique_id=1167487443]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 90.0
