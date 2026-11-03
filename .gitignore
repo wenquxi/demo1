@@ -4,3 +4,10 @@
 
 # Headless / local scratch scripts (not part of the game)
 _tmp_*
+
+# 插件目录是指向 F:/demo1/addons_shared/ 的符号链接，源码不在本仓库里。
+# 提交进来会变成一堆指向绝对路径的死链接，换台机器直接失效。
+addons/
+
+# 验收截图：由 tools/dike_shot.tscn 重新生成即可，5 MB 的 PNG 不进版本库
+shots/
